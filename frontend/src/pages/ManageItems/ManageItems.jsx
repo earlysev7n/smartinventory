@@ -1,13 +1,15 @@
+import ItemList from '../../components/ItemsList/ItemList';
+import ItemForm from '../../components/ItemForm/ItemForm';
 import './ManageItems.css';
 
 const ManageItems = () => {
     return (
         <div className="items-container text-light">
             <div className="left-column">
-                category form
+                <ItemForm />
             </div>
             <div className="right-column">
-                list of categories
+                <ItemList />
             </div>
         </div>
     );
