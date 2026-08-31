@@ -1,11 +1,34 @@
 import './CategoryList.css';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
+import { deleteCategory } from '../../service/CategoryService';
+import { toast } from 'react-hot-toast';
 
 
 const CategoryList = () => {
-  const { categories } = useContext(AppContext);
+  const { categories, setCategories } = useContext(AppContext);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const deleteByCategoryId = async(categoryId) => {
+    try {
+      const response = await deleteCategory(categoryId);
+      if (response.status === 204) {
+         const updatedCategories = categories.filter((c) => c.categoryId !== categoryId);
+         setCategories(updatedCategories);
+         toast.success('Category deleted successfully');
+      } else {
+        toast.error('Failed to delete category');
+      }
+    }
+    catch (error) {
+      toast.error('An error occurred while deleting the category');
+    }
+  }
+
   return (
     <div className="category-list-container" style={{height: '100vh',  overflowY: 'auto', overflowX: 'hidden' }}>
       <div className="row pe-2">
@@ -26,7 +49,7 @@ const CategoryList = () => {
           </span>
         </div>
         <div className="row g-3 pe-2">
-          {categories.map((category, index) => (
+          {filteredCategories.map((category, index) => (
             <div key = {index} className = "col-12">
               <div className="card p-3" style = {{backgroundColor: category.bgColor}}> 
               <div className="d-flex align-items-center">
@@ -40,7 +63,8 @@ const CategoryList = () => {
                   <p className="mb-0 text-white">{category.items}5 Items</p>
                 </div>
                 <div>
-                  <button className="btn btn-danger btn-sm"><i className="bi bi-trash"></i></button>
+                  <button className="btn btn-danger btn-sm"
+                  onClick={() => deleteByCategoryId(category.categoryId)}><i className="bi bi-trash"></i></button>
                 </div>
               </div>
             </div>
