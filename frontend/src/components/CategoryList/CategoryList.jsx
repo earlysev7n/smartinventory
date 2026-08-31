@@ -51,16 +51,14 @@ const CategoryList = () => {
         <div className="row g-3 pe-2">
           {filteredCategories.map((category, index) => (
             <div key = {index} className = "col-12">
-              <div className="card p-3" style = {{backgroundColor: category.bgColor}}> 
+              <div className="card p-3" style = {{backgroundColor: category.bgColor || '#2C3E50'}}> 
               <div className="d-flex align-items-center">
                 <div style = {{marginRight: '15px'}}>
-                  <img src = {category.imgUrl} alt = {category.name} className = "category-image" 
-                  onChange={(e) => setSearchTerm(e.target.value)} 
-                  value={searchTerm}/>
+                  <img src = {category.imgUrl} alt = {category.name} className = "category-image" />
                 </div>
                 <div className="flex-grow-1">
                   <h5 className="mb-1 text-white">{category.name}</h5>
-                  <p className="mb-0 text-white">{category.items}5 Items</p>
+                  <p className="mb-0 text-white">Items</p>
                 </div>
                 <div>
                   <button className="btn btn-danger btn-sm"
